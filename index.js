@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', async (req, res) => {
-    res.send('assignment twelve server is running')
+    res.send('assignment twelve server-side is running')
 });
 
 app.listen(port, () => console.log(`assignment twelve server running ${port}`))

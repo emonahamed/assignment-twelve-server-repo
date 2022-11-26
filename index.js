@@ -54,6 +54,14 @@ async function run() {
             const booking = req.body;
             console.log(booking)
             const result = await bookingsCollection.insertOne(booking);
+
+            const updateProduct = await allproduct.updateOne(
+                { _id: ObjectId(booking.productId) },
+                { $set: { isBooked: true } },
+                { upsert: true }
+            )
+
+            console.log(updateProduct)
             res.send(result);
         })
 
@@ -63,6 +71,13 @@ async function run() {
             const bookings = await bookingsCollection.find(query).toArray();
             res.send(bookings);
         });
+
+        // app.get('/products', async (req, res) => {
+        //     const email = req.query.email;
+        //     const query = { email: email };
+        //     const bookings = await bookingsCollection.find(query).toArray();
+        //     res.send(bookings);
+        // });
 
 
         app.get('/users', async (req, res) => {

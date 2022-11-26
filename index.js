@@ -72,12 +72,12 @@ async function run() {
             res.send(bookings);
         });
 
-        // app.get('/products', async (req, res) => {
-        //     const email = req.query.email;
-        //     const query = { email: email };
-        //     const bookings = await bookingsCollection.find(query).toArray();
-        //     res.send(bookings);
-        // });
+        app.get('/products', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const products = await allproduct.find(query).toArray();
+            res.send(products);
+        });
 
 
         app.get('/users', async (req, res) => {
@@ -104,6 +104,13 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
+
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await allproduct.deleteOne(filter);
             res.send(result);
         })
 

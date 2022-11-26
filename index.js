@@ -23,6 +23,8 @@ async function run() {
         const categoriesCollection = client.db('assignmentTwelve').collection('categories');
         const allproduct = client.db('assignmentTwelve').collection('allproduct');
         const bookingsCollection = client.db('assignmentTwelve').collection('bookings');
+        const usersCollection = client.db('assignmentTwelve').collection('users');
+
 
 
         app.get('/categories', async (req, res) => {
@@ -48,6 +50,39 @@ async function run() {
             const result = await bookingsCollection.insertOne(booking);
             res.send(result);
         })
+
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+            const query = { userEmail: email };
+            const bookings = await bookingsCollection.find(query).toArray();
+            res.send(bookings);
+        });
+
+
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
+        })
+
+        app.get('/users/admin/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email }
+            const user = await usersCollection.findOne(query);
+            res.send({ isAdmin: user?.role === 'admin' })
+        })
+
+
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
+
+
+
+
+
 
 
 

@@ -22,6 +22,7 @@ async function run() {
     try {
         const categoriesCollection = client.db('assignmentTwelve').collection('categories');
         const allproduct = client.db('assignmentTwelve').collection('allproduct');
+        const bookingsCollection = client.db('assignmentTwelve').collection('bookings');
 
 
         app.get('/categories', async (req, res) => {
@@ -40,6 +41,14 @@ async function run() {
             const products = await allproduct.find(query).toArray();
             res.send(products);
         });
+
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            console.log(booking)
+            const result = await bookingsCollection.insertOne(booking);
+            res.send(result);
+        })
+
 
 
     }

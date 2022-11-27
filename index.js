@@ -65,6 +65,22 @@ async function run() {
             res.send(result);
         })
 
+
+        app.put('/update/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const option = { upsert: true }
+            const updateReview = {
+                $set: {
+                    isAdvertise: true,
+                }
+            }
+            const result = await allproduct.updateOne(filter, updateReview, option)
+            res.send(result)
+        })
+
+
+
         app.get('/bookings', async (req, res) => {
             const email = req.query.email;
             const query = { userEmail: email };
@@ -81,7 +97,7 @@ async function run() {
 
 
         app.get('/users', async (req, res) => {
-            const query = {};
+            const query = { role: "user" };
             const users = await usersCollection.find(query).toArray();
             res.send(users);
         })
@@ -113,6 +129,37 @@ async function run() {
             const result = await allproduct.deleteOne(filter);
             res.send(result);
         })
+
+
+
+        app.get('/advertise', async (req, res) => {
+            // const isAdvertise = req.query.isAdvertise;
+            const query = { isAdvertise: true };
+            const products = await allproduct.find(query).toArray();
+            res.send(products);
+        });
+
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+
+        app.get('/sellers', async (req, res) => {
+            const query = { role: "seller" };
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
+        })
+
+        app.delete('/sellers/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
 
 
 
